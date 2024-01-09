@@ -4,12 +4,12 @@ import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA5b6SBGuNeGrjgp3NRWeSCQRRq3nr-CIw",
-  authDomain: "booking-app-2b105.firebaseapp.com",
-  projectId: "booking-app-2b105",
-  storageBucket: "booking-app-2b105.appspot.com",
-  messagingSenderId: "566291948553",
-  appId: "1:566291948553:web:ee5b0d5e6cd482caa6c4d8"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 
