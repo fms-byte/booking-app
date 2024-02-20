@@ -251,7 +251,7 @@ const HomeScreen = () => {
                 Genius
               </Text>
               <Text style={{ color: "white", fontSize: 15, fontWeight: "500" }}>
-                You are ate genius level one in our loyalty program
+                You are at Genius Level-1 in our loyalty program
               </Text>
             </Pressable>
 
@@ -277,7 +277,7 @@ const HomeScreen = () => {
                 15% Discounts
               </Text>
               <Text style={{ fontSize: 15, fontWeight: "500" }}>
-                Complete 5 stays to unlock level 2
+                Complete 5 stays to unlock Level 2
               </Text>
             </Pressable>
 

@@ -53,7 +53,7 @@ const ProfileScreen = () => {
     try {
       await auth.signOut();
       // Navigate to the Login screen or any other screen after sign-out
-      navigation.navigate('Login');
+      navigation.replace('Login');
     } catch (error) {
       console.error('Error signing out:', error);
     }
