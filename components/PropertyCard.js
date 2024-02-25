@@ -25,6 +25,7 @@ const PropertyCard = ({
   return (
     <View>
       <Pressable
+        key={property.id}
         onPress={() =>
           navigation.navigate("Info", {
             name: property.name,

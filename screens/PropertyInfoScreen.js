@@ -16,6 +16,22 @@ import Amenities from "../components/Amenities";
 const PropertyInfoScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+
+  const loadImage = (uri, width = 100, height = 80, borderRadius = 4) => {
+    return (
+      <View style={{ margin: 6 }}>
+        <Image
+          style={{
+            width: width,
+            height: height,
+            borderRadius: borderRadius,
+          }}
+          source={{ uri: uri }}
+        />
+      </View>
+    );
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -42,18 +58,10 @@ const PropertyInfoScreen = () => {
           <Pressable
             style={{ flexDirection: "row", flexWrap: "wrap", margin: 10 }}
           >
-            {route.params.photos.slice(0, 5).map((photo) => (
-              <View style={{ margin: 6 }}>
-                <Image
-                  style={{
-                    width: 120,
-                    height: pixelNormalize(80),
-                    borderRadius: pixelNormalize(4),
-                  }}
-                  source={{ uri: photo.image }}
-                />
-              </View>
-            ))}
+            {route.params.photos.slice(0, 5).map((photo) => {
+              //console.log(photo.image);
+              return loadImage(photo.image);
+            })}
             <Pressable
               style={{ alignItems: "center", justifyContent: "center" }}
             >
@@ -253,28 +261,37 @@ const PropertyInfoScreen = () => {
       </SafeAreaView>
 
       <Pressable
-      onPress={() => navigation.navigate("Rooms",{
-        rooms:route.params.availableRooms,
-        oldPrice:route.params.oldPrice,
-        newPrice:route.params.newPrice,
-        name:route.params.name,
-        children:route.params.children,
-        adults:route.params.adults,
-        rating:route.params.rating,
-        startDate:route.params.selectedDates.startDate,
-        endDate:route.params.selectedDates.endDate
-      })}
+        onPress={() =>
+          navigation.navigate("Rooms", {
+            rooms: route.params.availableRooms,
+            oldPrice: route.params.oldPrice,
+            newPrice: route.params.newPrice,
+            name: route.params.name,
+            children: route.params.children,
+            adults: route.params.adults,
+            rating: route.params.rating,
+            startDate: route.params.selectedDates.startDate,
+            endDate: route.params.selectedDates.endDate,
+          })
+        }
         style={{
           backgroundColor: "#003580",
           position: "absolute",
           bottom: 20,
           padding: 15,
-          width:"95%",
-          marginHorizontal:10,
-          borderRadius:10,
+          width: "95%",
+          marginHorizontal: 10,
+          borderRadius: 10,
         }}
       >
-        <Text style={{ textAlign: "center", color: "white",fontWeight:"bold",fontSize:17 }}>
+        <Text
+          style={{
+            textAlign: "center",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: 17,
+          }}
+        >
           Select Availabilty
         </Text>
       </Pressable>

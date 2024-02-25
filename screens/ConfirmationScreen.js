@@ -22,6 +22,7 @@ import BkashImg from "../assets/bkash.png";
 
 const ConfirmationScreen = () => {
   const route = useRoute();
+  console.log(route.params);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");

@@ -7,7 +7,8 @@ import {
   View,
   Button,
   Image,
-  Alert
+  Alert,
+  RefreshControl
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -30,6 +31,12 @@ const HomeScreen = () => {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [modalVisibile, setModalVisibile] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -99,7 +106,15 @@ const HomeScreen = () => {
       <View>
         <Header />
 
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{flexGrow:1}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
           <View
             style={{
               margin: 20,
@@ -125,8 +140,9 @@ const HomeScreen = () => {
               <TextInput
                 placeholderTextColor="black"
                 placeholder={
-                  route?.params ? route.params.input : "Enter Your Destination"
+                  route?.params ? route.params.input : "Press to select your Destination"
                 }
+                editable={false}
               />
             </Pressable>
 
