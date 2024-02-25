@@ -10,6 +10,7 @@ import {
   Dimensions,
   Image,
   ToastAndroid,
+  Alert
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -61,7 +62,7 @@ const ConfirmationScreen = () => {
     let temp = Math.floor(100000 + Math.random() * 900000);
     setOtp(temp);
     console.log("Generated Otp: "+temp);
-    ToastAndroid.show(`Your OTP is: ${temp}`, ToastAndroid.SHORT);
+    ToastAndroid.show(`Your OTP is: ${temp}`, ToastAndroid.SHORT);  
     setModalVisible(false);
     setOtpModalVisible(true);
   };
@@ -82,13 +83,13 @@ const ConfirmationScreen = () => {
     //console.log(userPin);
     setPinModalVisible(false);
     dispatch(savedPlaces(route.params));
+    //each booking id will be unique
     await setDoc(
-      doc(db, "users", `${uid}`),
+      doc(db, "bookings", `${route.params.name}-${Date.now()}`),
       {
         bookingDetails: { ...route.params },
-      },
-      {
-        merge: true,
+        bookingTime: new Date(),
+        userId: uid,
       }
     );
     ToastAndroid.show("Booking Confirmed!", ToastAndroid.SHORT);

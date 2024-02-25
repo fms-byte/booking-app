@@ -1,12 +1,17 @@
-import { StyleSheet, Text, View ,SafeAreaView,Pressable} from 'react-native'
-import React ,{useLayoutEffect} from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Pressable, ActivityIndicator  } from "react-native";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native';
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const BookingScreen = () => {
-  const bookings = useSelector((state) => state.booking.booking);
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const uid = auth.currentUser.uid;
+  const [loading, setLoading] = useState(true);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -24,14 +29,44 @@ const BookingScreen = () => {
       },
     });
   }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const colRef = collection(db, "bookings");
+      const q = query(colRef, where("userId", "==", uid));
+      const querySnapshot = await getDocs(q);
+
+      const userBookings = [];
+      querySnapshot.forEach((doc) => {
+        userBookings.push(doc.data());
+      });
+      setItems(userBookings);
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, [items]);
+
+  //console.log(items);
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#003580" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView>
-          {bookings.length > 0 && bookings.map((item) => (
+      {items.map((item, index) => {
+        //console.log(item.bookingDetails.name);
+        return (
         <Pressable
+          key={index}
           style={{
             backgroundColor: "white",
-            marginVertical:10,
-            marginHorizontal:20,
+            marginVertical: 10,
+            marginHorizontal: 20,
             borderColor: "#E0E0E0",
             borderWidth: 1,
             padding: 14,
@@ -40,7 +75,7 @@ const BookingScreen = () => {
         >
           <View>
             <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-              {item.name}
+              {item.bookingDetails.name}
             </Text>
             <View
               style={{
@@ -51,7 +86,7 @@ const BookingScreen = () => {
             >
               <MaterialIcons name="stars" size={24} color="green" />
               <Text style={{ marginLeft: 3, fontSize: 15, fontWeight: "400" }}>
-                {item.rating}
+                {item.bookingDetails.rating}
               </Text>
               <Text style={{ marginLeft: 3 }}>•</Text>
               <View
@@ -81,7 +116,7 @@ const BookingScreen = () => {
                 style={{
                   padding: 6,
                   borderRadius: 4,
-                  width: 100,
+                  width: 120,
                   backgroundColor: "green",
 
                   marginLeft: 4,
@@ -96,17 +131,17 @@ const BookingScreen = () => {
                     fontWeight: "400",
                   }}
                 >
-                  Cost: {item.newPrice}
+                  Cost: {item.bookingDetails.newPrice} BDT
                 </Text>
               </View>
             </View>
           </View>
         </Pressable>
-      ))}
+      )})}
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default BookingScreen
+export default BookingScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
